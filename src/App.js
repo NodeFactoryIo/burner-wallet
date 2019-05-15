@@ -49,7 +49,7 @@ import bufficorn from './bufficorn.png';
 import cypherpunk from './cypherpunk.png';
 import eth from './ethereum.png';
 import dai from './dai.jpg';
-import xdai from './xdai.jpg';
+import leth from './leth.png';
 import Wyre from './services/wyre';
 
 let base64url = require('base64url')
@@ -174,15 +174,14 @@ let dollarConversion = 1.0
 //let dollarSymbol = "€"
 //let dollarConversion = 0.88
 let convertToDollar = (amount)=>{
-  return (parseFloat(amount)/dollarConversion)
+  return (parseFloat(amount))
 }
 let convertFromDollar = (amount)=>{
   return (parseFloat(amount)*dollarConversion)
 }
 let dollarDisplay = (amount)=>{
-  let floatAmount = parseFloat(amount)
-  amount = Math.floor(amount*100)/100
-  return dollarSymbol+convertFromDollar(amount).toFixed(2)
+  console.log('Amount is ', amount);
+  return 'LETH '+ parseFloat(amount).toFixed(5);
 }
 
 let interval
@@ -375,11 +374,10 @@ class App extends Component {
         }
       }
     }
-    setTimeout(this.poll.bind(this),150)
-    setTimeout(this.poll.bind(this),650)
+    setTimeout(this.poll.bind(this),1500);
     interval = setInterval(this.poll.bind(this),1500)
     intervalLong = setInterval(this.longPoll.bind(this),45000)
-    setTimeout(this.longPoll.bind(this),150)
+    setTimeout(this.longPoll.bind(this),3500)
 
     let mainnetweb3 = new Web3(new Web3.providers.WebsocketProvider('wss://mainnet.infura.io/ws/v3/e0ea6e73570246bbb3d4bd042c4b5dac'))
     let ensContract = new mainnetweb3.eth.Contract(require("./contracts/ENS.abi.js"),require("./contracts/ENS.address.js"))
@@ -1292,7 +1290,7 @@ render() {
 
           let defaultBalanceDisplay = (
             <div>
-              <Balance icon={xdai} selected={false} text={"xdai"} amount={this.state.xdaiBalance} address={account} dollarDisplay={dollarDisplay} />
+              <Balance icon={leth} selected={false} text={"LETH"} amount={this.state.xdaiBalance} address={account} dollarDisplay={dollarDisplay} />
               <Ruler/>
             </div>
           )
@@ -1331,7 +1329,7 @@ render() {
 
                   {extraTokens}
 
-                  <Balance icon={xdai} selected={selected} text={"xDai"} amount={this.state.xdaiBalance} address={account} dollarDisplay={dollarDisplay}/>
+                  <Balance icon={leth} selected={selected} text={"LETH"} amount={this.state.xdaiBalance} address={account} dollarDisplay={dollarDisplay}/>
                   <Ruler/>
                   <Balance icon={dai} selected={selected} text={"DAI"} amount={this.state.daiBalance} address={account} dollarDisplay={dollarDisplay}/>
                   <Ruler/>
@@ -1767,8 +1765,8 @@ render() {
                   <NavCard title={i18n.t('exchange_title')} goBack={this.goBack.bind(this)}/>
                   <Exchange
                     eth={eth}
+                    xdai={leth}
                     dai={dai}
-                    xdai={xdai}
                     ERC20NAME={ERC20NAME}
                     ERC20IMAGE={ERC20IMAGE}
                     ERC20TOKEN={ERC20TOKEN}

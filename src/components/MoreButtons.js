@@ -46,7 +46,7 @@ export default ({isVendor, buttonStyle,ERC20TOKEN,address, balance, changeAlert,
         </button>
       </div>
       <div className="col-6 p-1">
-        {exchangeButton}
+        {false ? exchangeButton : null}
       </div>
     </div>
   )
