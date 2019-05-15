@@ -56,19 +56,19 @@ let base64url = require('base64url')
 const EthCrypto = require('eth-crypto');
 
 //const POA_XDAI_NODE = "https://dai-b.poa.network"
-const POA_XDAI_NODE = "https://dai.poa.network"
 
-let XDAI_PROVIDER = POA_XDAI_NODE
-
-let WEB3_PROVIDER
-let CLAIM_RELAY
-let ERC20TOKEN
-let ERC20VENDOR
-let ERC20IMAGE
-let ERC20NAME
-let LOADERIMAGE = burnerlogo
+// let XDAI_PROVIDER = 'https://rpc-bitfalls1.lisinski.online';
+let XDAI_PROVIDER = 'https://ropsten.infura.io/v3/e0ea6e73570246bbb3d4bd042c4b5dac';
+let WEB3_PROVIDER = 'https://ropsten.infura.io/v3/e0ea6e73570246bbb3d4bd042c4b5dac';
+// let WEB3_PROVIDER = 'https://rpc-bitfalls1.lisinski.online';
+let CLAIM_RELAY = false;
+let ERC20TOKEN = false;
+let ERC20VENDOR = false;
+let ERC20IMAGE = false;
+let ERC20NAME = false;
+let LOADERIMAGE = burnerlogo;
 let HARDCODEVIEW// = "loader"// = "receipt"
-let FAILCOUNT = 0
+let FAILCOUNT = 0;
 
 let mainStyle = {
   width:"100%",
@@ -86,7 +86,7 @@ let titleImage = (
 )
 
 //<i className="fas fa-fire" />
-if (window.location.hostname.indexOf("localhost") >= 0 || window.location.hostname.indexOf("10.0.0.107") >= 0) {
+if (false && window.location.hostname.indexOf("localhost") >= 0) {
   XDAI_PROVIDER = "http://localhost:8545"
   WEB3_PROVIDER = "http://localhost:8545";
   CLAIM_RELAY = 'http://localhost:18462'
@@ -103,55 +103,7 @@ if (window.location.hostname.indexOf("localhost") >= 0 || window.location.hostna
     WEB3_PROVIDER = "http://localhost:8545";
     LOADERIMAGE = bufficorn
   }
-
 }
-else if (window.location.hostname.indexOf("s.xdai.io") >= 0) {
-  WEB3_PROVIDER = POA_XDAI_NODE;
-  CLAIM_RELAY = 'https://x.xdai.io'
-  ERC20TOKEN = false//'Burner'
-}
-else if (window.location.hostname.indexOf("wallet.galleass.io") >= 0) {
-  //WEB3_PROVIDER = "https://rinkeby.infura.io/v3/e0ea6e73570246bbb3d4bd042c4b5dac";
-  WEB3_PROVIDER = "http://localhost:8545"
-  //CLAIM_RELAY = 'https://x.xdai.io'
-  ERC20TOKEN = false//'Burner'
-  document.domain = 'galleass.io'
-}
-else if (window.location.hostname.indexOf("qreth") >= 0) {
-  WEB3_PROVIDER = "https://mainnet.infura.io/v3/e0ea6e73570246bbb3d4bd042c4b5dac"
-  CLAIM_RELAY = false
-  ERC20TOKEN = false
-}
-else if (window.location.hostname.indexOf("xdai") >= 0) {
-  WEB3_PROVIDER = POA_XDAI_NODE;
-  CLAIM_RELAY = 'https://x.xdai.io'
-  ERC20TOKEN = false
-}
-else if (window.location.hostname.indexOf("buffidai") >= 0) {
-  WEB3_PROVIDER = POA_XDAI_NODE;
-  CLAIM_RELAY = 'https://x.xdai.io'
-  ERC20NAME = 'BUFF'
-  ERC20VENDOR = 'VendingMachine'
-  ERC20TOKEN = 'ERC20Vendable'
-  ERC20IMAGE = bufficorn
-  LOADERIMAGE = bufficorn
-}
-else if (window.location.hostname.indexOf("burnerwallet.io") >= 0) {
-  WEB3_PROVIDER = POA_XDAI_NODE;
-  CLAIM_RELAY = 'https://x.xdai.io'
-  ERC20NAME = 'BURN'
-  ERC20VENDOR = 'BurnerVendor'
-  ERC20TOKEN = 'Burner'
-  ERC20IMAGE = cypherpunk
-  LOADERIMAGE = cypherpunk
-}
-else if (window.location.hostname.indexOf("burnerwithrelays") >= 0) {
-  WEB3_PROVIDER = "https://dai.poa.network";
-  ERC20NAME = false
-  ERC20TOKEN = false
-  ERC20IMAGE = false
-}
-
 
 if(ERC20NAME=="BUFF"){
   mainStyle.backgroundImage = "linear-gradient(#540d48, #20012d)"
@@ -447,10 +399,14 @@ class App extends Component {
   }
   async poll() {
 
+    // console.log('NETWORK IS: ', this.state.network); UNKNOWN
+    console.log(this.state.contracts);
+
     let badgeBalance = 0
-    if(this.state.contracts&&(this.state.network=="xDai"||this.state.network=="Unknown") && this.state.contracts.Badges){
+    // Removed badge checking for unknown network - new chain
+    if(this.state.contracts&&(this.state.network=="xDai"/*||this.state.network=="Unknown"*/) && this.state.contracts.Badges){
       //check for badges for this user
-      badgeBalance = await this.state.contracts.Badges.balanceOf(this.state.account).call()
+      badgeBalance = await this.state.contracts.Badges.balanceOf(this.state.account).call();
       if(badgeBalance>0){
         let update = false
         for(let b = 0;b<badgeBalance;b++){
@@ -553,8 +509,11 @@ class App extends Component {
 
 
       }
+      console.log('logging state');
+      console.log(this.state);
       if(this.state.xdaiweb3){
         xdaiBalance = await this.state.xdaiweb3.eth.getBalance(this.state.account)
+        console.log("xdai balance is ", xdaiBalance);
         xdaiBalance = this.state.xdaiweb3.utils.fromWei(""+xdaiBalance,'ether')
       }
 
@@ -1137,7 +1096,6 @@ render() {
     <div id="main" style={mainStyle}>
       <div style={innerStyle}>
         {extraHead}
-        {networkOverlay}
         {web3_setup}
 
         <div>
