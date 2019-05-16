@@ -57,10 +57,10 @@ const EthCrypto = require('eth-crypto');
 
 //const POA_XDAI_NODE = "https://dai-b.poa.network"
 
-// let XDAI_PROVIDER = 'https://rpc-bitfalls1.lisinski.online';
-let XDAI_PROVIDER = 'https://ropsten.infura.io/v3/e0ea6e73570246bbb3d4bd042c4b5dac';
-let WEB3_PROVIDER = 'https://ropsten.infura.io/v3/e0ea6e73570246bbb3d4bd042c4b5dac';
-// let WEB3_PROVIDER = 'https://rpc-bitfalls1.lisinski.online';
+let XDAI_PROVIDER = 'https://rpc-bitfalls1.lisinski.online';
+//let XDAI_PROVIDER = 'https://ropsten.infura.io/v3/e0ea6e73570246bbb3d4bd042c4b5dac';
+//let WEB3_PROVIDER = 'https://ropsten.infura.io/v3/e0ea6e73570246bbb3d4bd042c4b5dac';
+let WEB3_PROVIDER = 'https://rpc-bitfalls1.lisinski.online';
 let CLAIM_RELAY = false;
 let ERC20TOKEN = false;
 let ERC20VENDOR = false;
